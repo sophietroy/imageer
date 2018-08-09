@@ -2,6 +2,7 @@ defmodule Imageer.ImageController do
   use Imageer.Web, :controller
   alias Imageer.Image
   alias Imageer.Repo
+  alias Imageer.Avatar
 
   def index(conn, _) do
     render(conn, "index.html")
@@ -29,9 +30,17 @@ defmodule Imageer.ImageController do
 
     IO.puts "image tmp location: #{filename}"
 
-    with {:ok, uploaded_image} <- Cloudex.upload(filename),
-      {:ok, image} <- save_url(uploaded_image.secure_url) do
-        IO.puts "Success"
+
+
+    with {:ok, uploaded_image} <- Avatar.store(image) do
+      IO.puts "uploaded_image"
+      IO.inspect uploaded_image
+       url = Avatar.url(uploaded_image)
+       IO.puts "original url: #{url}"
+       thumb_url = Avatar.url(uploaded_image, :thumb)
+       IO.puts "thumb: #{thumb_url}"
+
+        IO.puts "Success url: #{url}"
         IO.inspect uploaded_image
         conn
         |> put_flash(:info, "Image was added")
