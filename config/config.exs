@@ -23,9 +23,9 @@ config :logger, :console,
   metadata: [:request_id]
 
 config :cloudex,
-  api_key: "SECRET",
-  secret: "SECRET",
-  cloud_name: "SECRET"
+  api_key: System.get_env("CLOUDINARY_API_KEY"),
+  secret: System.get_env("CLOUDINARY_SECRET"),
+  cloud_name: System.get_env("CLOUDINARY_CLOUD_NAME")
 
 
 # Import environment specific config. This must remain at the bottom
